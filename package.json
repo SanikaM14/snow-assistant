@@ -1,0 +1,44 @@
+{
+  "name": "snow-assistant",
+  "version": "1.0.0",
+  "description": "Snow Multimodal Assistant, with a live 3D mascot companion",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"wait-on tcp:5173 && electron .\"",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && .\\venv\\Scripts\\activate && uvicorn main:app --reload --port 8000",
+    "build:frontend": "cd frontend && npm run build",
+    "build:electron": "electron-builder --win --mac --linux",
+    "build": "npm run build:frontend && npm run build:electron"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^29.1.4",
+    "electron-builder": "^24.13.3",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.aria.assistant",
+    "productName": "Aria",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/dist/**/*",
+      "backend/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
