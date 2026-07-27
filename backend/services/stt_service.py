@@ -1,24 +1,45 @@
 import os
-import asyncio
-from faster_whisper import WhisperModel
-
-# Load model globally to avoid reloading on every request
-# Use base or tiny for local speed
-MODEL_SIZE = "base"
-# On first run, this downloads the model to local cache
-model = WhisperModel(MODEL_SIZE, device="cpu", compute_type="int8")
+import httpx
 
 async def transcribe_audio(file_path: str) -> str:
-    loop = asyncio.get_event_loop()
+    """
+    Transcribes audio using Groq's extremely fast Whisper API
+    instead of a local model to stay within Vercel's serverless limits.
+    """
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        print("STT Error: GROQ_API_KEY is not configured")
+        return ""
+        
+    api_key = api_key.strip('"').strip("'")
     
-    def _transcribe():
-        segments, info = model.transcribe(file_path, beam_size=5)
-        text = "".join([segment.text for segment in segments])
-        return text.strip()
-
+    headers = {
+        "Authorization": f"Bearer {api_key}"
+    }
+    
     try:
-        text = await loop.run_in_executor(None, _transcribe)
-        return text
+        # We use standard synchronous open with httpx async client 
+        # which is perfectly fine for small audio files
+        with open(file_path, "rb") as f:
+            files = {
+                "file": (os.path.basename(file_path), f, "audio/mpeg"),
+                "model": (None, "whisper-large-v3-turbo")
+            }
+            
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "https://api.groq.com/openai/v1/audio/transcriptions",
+                    headers=headers,
+                    files=files,
+                    timeout=30.0
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    return data.get("text", "").strip()
+                else:
+                    print(f"Groq STT Error: {response.status_code} - {response.text}")
+                    return ""
     except Exception as e:
-        print(f"STT Error: {e}")
+        print(f"STT Exception: {e}")
         return ""
