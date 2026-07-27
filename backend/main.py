@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+import sys
+
+# Ensure Python can find the local modules (routers, db) when running on Vercel
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from routers import chat, stt, tts, image, sessions, health
 from db.database import init_db
