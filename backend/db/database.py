@@ -1,7 +1,8 @@
 import aiosqlite
 import os
 
-DB_PATH = "snow.db"
+# On Vercel, the file system is read-only except for /tmp.
+DB_PATH = "/tmp/snow.db" if os.environ.get("VERCEL") else "snow.db"
 
 async def get_db():
     db = await aiosqlite.connect(DB_PATH)
