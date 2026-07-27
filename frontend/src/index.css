@@ -4,27 +4,47 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #020817;
+    --background: #f8fafc;
+    --foreground: #0f172a;
     --card: #ffffff;
-    --card-foreground: #020817;
+    --card-foreground: #0f172a;
     --primary: #2563eb;
-    --primary-foreground: #f8fafc;
+    --primary-foreground: #ffffff;
+    
+    /* New premium colors */
+    --accent-glow: rgba(37, 99, 235, 0.15);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.4);
   }
 
   .dark {
-    --background: #020817;
+    --background: #0b0f19;
     --foreground: #f8fafc;
-    --card: #0f172a;
+    --card: #131b2c;
     --card-foreground: #f8fafc;
     --primary: #3b82f6;
-    --primary-foreground: #0f172a;
+    --primary-foreground: #ffffff;
+    
+    /* New premium dark mode colors */
+    --accent-glow: rgba(59, 130, 246, 0.15);
+    --glass-bg: rgba(19, 27, 44, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
   }
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -40,8 +60,19 @@ body {
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(75, 85, 99, 0.4);
 }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.6);
+}
 
+/* Code Blocks */
 .prose pre {
   background-color: #1e293b !important;
   color: #f8fafc !important;
+  border-radius: 0.75rem;
+  box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06);
+}
+
+/* Subtle animations */
+.hover-glow:hover {
+  box-shadow: 0 0 15px var(--accent-glow);
 }

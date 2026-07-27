@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react'
-import { Mic, Square } from 'lucide-react'
 import { useMascotStore } from '../../store/mascotStore'
 
 export default function VoiceRecorder({ onTranscription, disabled }) {
@@ -77,14 +76,14 @@ export default function VoiceRecorder({ onTranscription, disabled }) {
     <button
       onClick={isRecording ? stopRecording : startRecording}
       disabled={disabled}
-      className={`p-3 rounded-full transition-all flex-shrink-0 ${
+      className={`h-11 w-11 rounded-full transition-all flex-shrink-0 flex items-center justify-center ${
         isRecording 
-          ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' 
+          ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.5)]' 
           : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={isRecording ? "Stop Recording" : "Start Voice Input"}
     >
-      {isRecording ? <Square size={20} /> : <Mic size={20} />}
+      {isRecording ? <i className="bi bi-stop-fill text-xl"></i> : <i className="bi bi-mic-fill text-xl"></i>}
     </button>
   )
 }

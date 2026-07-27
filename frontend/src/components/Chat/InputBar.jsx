@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react'
-import { Send, Image as ImageIcon, X } from 'lucide-react'
 import VoiceRecorder from './VoiceRecorder'
 
 export default function InputBar({ onSend, disabled }) {
@@ -56,28 +55,28 @@ export default function InputBar({ onSend, disabled }) {
   }
 
   return (
-    <div className="flex flex-col w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
+    <div className="flex flex-col w-full glass-panel border-t-0 p-4">
       
       {image && (
-        <div className="flex items-center gap-2 mb-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-lg w-fit relative group">
-          <img src={image.url} alt="upload preview" className="h-16 w-16 object-cover rounded" />
+        <div className="flex items-center gap-2 mb-3 bg-white/50 dark:bg-black/50 p-2 rounded-xl w-fit relative group backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+          <img src={image.url} alt="upload preview" className="h-16 w-16 object-cover rounded-lg" />
           <button 
             onClick={() => setImage(null)}
-            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow hover:bg-red-600 transition-colors"
+            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center shadow-lg hover:bg-red-600 transition-all hover:scale-110"
           >
-            <X size={14} />
+            <i className="bi bi-x-lg text-xs"></i>
           </button>
         </div>
       )}
 
-      <div className="flex items-end gap-2 w-full">
+      <div className="flex items-end gap-3 w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-1.5 pr-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all">
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="p-3 text-gray-500 hover:text-blue-500 transition-colors flex-shrink-0"
+          className="p-2.5 text-gray-500 hover:text-primary transition-colors flex-shrink-0 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 ml-1"
           title="Attach Image"
           disabled={disabled}
         >
-          <ImageIcon size={22} />
+          <i className="bi bi-image text-xl"></i>
         </button>
         <input 
           type="file" 
@@ -92,8 +91,8 @@ export default function InputBar({ onSend, disabled }) {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
-          placeholder="Ask Snow anything... (Shift+Enter for new line, paste images)"
-          className="flex-grow resize-none overflow-y-auto bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl py-3 px-4 outline-none focus:ring-2 focus:ring-blue-500 max-h-32 min-h-[50px]"
+          placeholder="Ask Snow anything... (Shift+Enter for new line)"
+          className="flex-grow resize-none overflow-y-auto bg-transparent text-gray-900 dark:text-gray-100 py-3 px-2 outline-none max-h-32 min-h-[50px] custom-scrollbar"
           rows={1}
           disabled={disabled}
         />
@@ -103,14 +102,14 @@ export default function InputBar({ onSend, disabled }) {
         <button
           onClick={handleSend}
           disabled={(!text.trim() && !image) || disabled}
-          className={`p-3 rounded-full flex-shrink-0 transition-colors ${
+          className={`h-11 w-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
             (!text.trim() && !image) || disabled
-              ? 'bg-gray-200 dark:bg-gray-800 text-gray-400'
-              : 'bg-blue-600 hover:bg-blue-700 text-white shadow-md'
+              ? 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+              : 'bg-primary hover:bg-blue-700 text-white shadow-md hover-glow'
           }`}
           title="Send"
         >
-          <Send size={20} />
+          <i className="bi bi-send-fill text-lg ml-0.5"></i>
         </button>
       </div>
     </div>
